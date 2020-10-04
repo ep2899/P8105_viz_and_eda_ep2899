@@ -5,14 +5,14 @@ Visualization
 library(tidyverse)
 ```
 
-    ## -- Attaching packages --------------------------------------------------------------- tidyverse 1.3.0 --
+    ## -- Attaching packages ----------------------------------------------------------- tidyverse 1.3.0 --
 
     ## v ggplot2 3.3.2     v purrr   0.3.4
     ## v tibble  3.0.3     v dplyr   1.0.2
     ## v tidyr   1.1.2     v stringr 1.4.0
     ## v readr   1.3.1     v forcats 0.5.0
 
-    ## -- Conflicts ------------------------------------------------------------------ tidyverse_conflicts() --
+    ## -- Conflicts -------------------------------------------------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -173,3 +173,57 @@ weather_df %>%
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
 ![](viz_ii.Rmd_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+## Themes
+
+Shift the legend.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot" ,
+    x = "Minimum daily temperature (C)" ,
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis ::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE)
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_ii.Rmd_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+theme (legend.position = "bottom")
+```
+
+    ## List of 1
+    ##  $ legend.position: chr "bottom"
+    ##  - attr(*, "class")= chr [1:2] "theme" "gg"
+    ##  - attr(*, "complete")= logi FALSE
+    ##  - attr(*, "validate")= logi TRUE
+
+Change the overall theme.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = 0.5) + 
+  labs(
+    title = "Temperature Plot" ,
+    x = "Minimum daily temperature (C)" ,
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis ::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE) + 
+  theme_minimal() +
+  theme (legend.position = "bottom")
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](viz_ii.Rmd_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
