@@ -5,14 +5,14 @@ Visualization
 library(tidyverse)
 ```
 
-    ## -- Attaching packages ----------------------------------------------------------- tidyverse 1.3.0 --
+    ## -- Attaching packages ----------------------------------------------------------------- tidyverse 1.3.0 --
 
     ## v ggplot2 3.3.2     v purrr   0.3.4
     ## v tibble  3.0.3     v dplyr   1.0.2
     ## v tidyr   1.1.2     v stringr 1.4.0
     ## v readr   1.3.1     v forcats 0.5.0
 
-    ## -- Conflicts -------------------------------------------------------------- tidyverse_conflicts() --
+    ## -- Conflicts -------------------------------------------------------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -325,3 +325,39 @@ tmax_date_p=
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
 ![](viz_ii.Rmd_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+## Data manipulation
+
+Control your factors.
+
+``` r
+weather_df %>% 
+  mutate(
+  name = factor(name),
+  name = forcats::fct_relevel(name, c("Waikiki_HA"))
+    ) %>% 
+  ggplot(aes(x = name, y= tmax, fill=name))+
+  geom_violin(alpha = 0.5)
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+![](viz_ii.Rmd_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+What if I wanted densities for tmin and tmax simultaneously?
+
+``` r
+weather_df %>% 
+  pivot_longer(
+  tmax:tmin,
+  names_to = "observation" ,
+  values_to = "temperatures"
+  ) %>% 
+  ggplot(aes(x= temperatures, fill = observation))+
+  geom_density(alpha=0.5) +
+facet_grid(. ~name)
+```
+
+    ## Warning: Removed 18 rows containing non-finite values (stat_density).
+
+![](viz_ii.Rmd_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
